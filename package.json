@@ -4,7 +4,10 @@
   "description": "It is MERN Ecommerce site",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server"
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -17,6 +20,12 @@
   },
   "homepage": "https://github.com/harishpariyar07/ProShop-Ecommerce#readme",
   "dependencies": {
+    "axios": "^1.2.1",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20"
   }
 }
