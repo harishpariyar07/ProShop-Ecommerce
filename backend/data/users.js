@@ -1,4 +1,4 @@
-import bcrypt from 'brcyptjs'
+import bcrypt from 'bcryptjs'
 
 const users = [
     {
