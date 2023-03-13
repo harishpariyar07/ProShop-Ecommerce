@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Link, useParams, useNavigate } from 'react-router-dom'
-import { Row, Col, Image, ListGroup, Card, Button, FormControl } from 'react-bootstrap'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import { listProductsDetails } from '../actions/productsActions'
 import { useDispatch, useSelector } from 'react-redux'
@@ -81,13 +81,13 @@ const ProductScreen = () => {
                                         <Row>
                                             <Col>Qty: </Col>
                                             <Col>
-                                                <FormControl as='select' value={qty} onChange={(e) => setQty(e.target.value)}>
+                                                <Form.Control as='select' value={qty} onChange={(e) => setQty(e.target.value)}>
                                                     {
                                                         [...Array(product.countInStock).keys()].map((x) => {
                                                             return (<option key={x + 1} value={x + 1}>{x + 1} </option>)
                                                         })
                                                     }
-                                                </FormControl>
+                                                </Form.Control>
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>}
