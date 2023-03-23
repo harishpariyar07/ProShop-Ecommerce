@@ -30,8 +30,6 @@ const CartScreen = () => {
         navigate('/login?redirect=shopping')
     }
 
-    // const cart = useSelector((state) => state.cart)
-
     return (
         <Row>
             <Col md={8}>
