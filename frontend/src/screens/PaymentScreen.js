@@ -18,7 +18,7 @@ const PaymentScreen = () => {
         navigate('/shipping')
     }
 
-    const [paymentMethod, setPaymentMethod] = useState(cart.paymentMethod)
+    const [paymentMethod, setPaymentMethod] = useState(cart.paymentMethod ? cart.paymentMethod : 'PayPal')
 
     const submitHandler = (e) => {
         e.preventDefault()
