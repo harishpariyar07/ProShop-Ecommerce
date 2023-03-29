@@ -1,6 +1,6 @@
 import { Button, Form, Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState, } from 'react'
+import { useState, } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
@@ -18,7 +18,7 @@ const PaymentScreen = () => {
         navigate('/shipping')
     }
 
-    const [paymentMethod, setPaymentMethod] = useState('PayPal')
+    const [paymentMethod, setPaymentMethod] = useState(cart.paymentMethod)
 
     const submitHandler = (e) => {
         e.preventDefault()
