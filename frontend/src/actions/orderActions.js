@@ -15,6 +15,9 @@ import {
     ORDER_LIST_MY_SUCCESS
 } from '../constants/orderConstants'
 
+const URL = process.env.BASE_URL
+
+
 export const createOrder = (order) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -32,7 +35,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
             }
         }
 
-        const { data } = await axios.post(`/api/orders`, order, config)
+        const { data } = await axios.post(`${URL}/api/orders`, order, config)
 
         dispatch({
             type: ORDER_CREATE_SUCCESS,
@@ -65,7 +68,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
             }
         }
 
-        const { data } = await axios.get(`/api/orders/${id}`, config)
+        const { data } = await axios.get(`${URL}/api/orders/${id}`, config)
 
         dispatch({
             type: ORDER_DETAILS_SUCCESS,
@@ -100,7 +103,7 @@ export const payOrder = (orderId, paymentResult) => async (dispatch, getState) =
             }
         }
 
-        const { data } = await axios.put(`/api/orders/${orderId}/pay`, paymentResult, config)
+        const { data } = await axios.put(`${URL}/api/orders/${orderId}/pay`, paymentResult, config)
 
         dispatch({
             type: ORDER_PAY_SUCCESS,
@@ -133,7 +136,7 @@ export const listMyOrders = () => async (dispatch, getState) => {
             },
         }
 
-        const { data } = await axios.get(`/api/orders/myorders`, config)
+        const { data } = await axios.get(`${URL}/api/orders/myorders`, config)
 
         dispatch({
             type: ORDER_LIST_MY_SUCCESS,
