@@ -15,7 +15,7 @@ import {
     ORDER_LIST_MY_SUCCESS
 } from '../constants/orderConstants'
 
-const URL = process.env.BASE_URL
+const URL = process.env.REACT_APP_BASE_URL
 
 
 export const createOrder = (order) => async (dispatch, getState) => {

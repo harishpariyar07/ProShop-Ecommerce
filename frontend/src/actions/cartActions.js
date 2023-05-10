@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPING_ADDRESS, CART_SAVE_PAYMENT_METHOD } from '../constants/cartConstants'
 
-const URL = process.env.BASE_URL
+const URL = process.env.REACT_APP_BASE_URL
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
     const { data } = await axios.get(`${URL}/api/products/${id}`)
