@@ -10,14 +10,14 @@ import { listProductsDetails, updateProduct } from '../actions/productsActions'
 import FormContainer from '../components/FormContainer'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 
-const URL = process.env.BASE_URL
+const URL = process.env.REACT_APP_BASE_URL
 
 const ProductEditScreen = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [name, setName] = useState('')
-    const [price, setPrice] = useState(0)
     const [image, setImage] = useState('')
+    const [price, setPrice] = useState(0)
     const [brand, setBrand] = useState('')
     const [category, setCategory] = useState('')
     const [countInStock, setCountInStock] = useState(0)
@@ -61,7 +61,7 @@ const ProductEditScreen = () => {
         try {
             const config = {
                 headers: {
-                    'Content-type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data'
                 }
             }
 
