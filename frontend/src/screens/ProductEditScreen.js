@@ -65,8 +65,9 @@ const ProductEditScreen = () => {
                 }
             }
 
-            const { data } = await axios.put(`${URL}/api/upload`, formData, config)
+            const { data } = await axios.post(`${URL}/api/upload`, formData, config)
             setImage(data)
+            setUploading(false)
         }
         catch (err) {
             setUploading(false)
@@ -124,10 +125,9 @@ const ProductEditScreen = () => {
                         <Form.Control type='text' placeholder='Enter image url' value={image} onChange={(e) => setImage(e.target.value)}>
 
                         </Form.Control>
-                        <Form.File id='image-file' label='Choose file' custom onChange={uploadFileHandler}>
-                            {uploading && <Loader />}
-
-                        </Form.File>
+                        <Form.Control type='file' label='Choose file' onChange={uploadFileHandler}>
+                        </Form.Control>
+                        {uploading && <Loader />}
                     </Form.Group>
 
                     <Form.Group controlId='brand'>
