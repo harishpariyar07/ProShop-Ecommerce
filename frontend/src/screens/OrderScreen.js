@@ -1,18 +1,59 @@
 import React, { useEffect } from 'react'
-import { Col, Image, ListGroup, Row, Card } from 'react-bootstrap'
-import { Link, useParams } from 'react-router-dom'
+import { Col, Image, ListGroup, Row, Card, Button } from 'react-bootstrap'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getOrderDetails } from '../actions/orderActions'
+import { deliverOrder, getOrderDetails, payOrder } from '../actions/orderActions'
+import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants'
+import StripeCheckout from 'react-stripe-checkout'
+import moment from 'moment'
 
 
 const OrderScreen = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
+    const navigate = useNavigate()
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
+
     const orderDetails = useSelector(state => state.orderDetails)
     const { order, loading, error } = orderDetails
 
+    const orderPay = useSelector(state => state.orderPay)
+    const { loading: loadingPay, success: successPay } = orderPay
+
+    const orderDeliver = useSelector(state => state.orderDeliver)
+    const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+
+    const KEY = process.env.REACT_APP_STRIPE
+
+    useEffect(() => {
+        if (!userInfo) {
+            navigate('/login')
+        }
+
+        if (!order || successPay || successDeliver || order._id !== id) {
+            dispatch({ type: ORDER_PAY_RESET })
+            dispatch({ type: ORDER_DELIVER_RESET })
+            dispatch(getOrderDetails(id))
+        }
+    }, [dispatch, id, order, successPay, successDeliver, userInfo, navigate])
+
+    const successPaymentHandler = (payment) => {
+        dispatch(payOrder(id, payment))
+    }
+
+    const successDeliverHandler = () => {
+        dispatch(deliverOrder(order))
+    }
+
+
+    const onToken = (token) => {
+        const paidAt = moment.unix(token.created).format('YYYY-MM-DD HH:mm:ss');
+        successPaymentHandler({ id: id, status: "Paid", update_time: paidAt, email_address: token.email })
+    }
 
     if (!loading && order) {
         const addDecimals = (num) => {
@@ -23,10 +64,6 @@ const OrderScreen = () => {
             order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
         )
     }
-
-    useEffect(() => {
-        dispatch(getOrderDetails(id))
-    }, [dispatch, id])
 
 
     return (
@@ -119,7 +156,7 @@ const OrderScreen = () => {
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Taxt</Col>
+                                    <Col>Tax</Col>
                                     <Col>${order.taxPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
@@ -129,6 +166,27 @@ const OrderScreen = () => {
                                     <Col>${order.totalPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
+                            {!order.isPaid && (
+                                <ListGroup.Item>
+                                    {loadingPay ? <Loader /> : (
+                                        <StripeCheckout
+                                            name='Payment'
+                                            description={`Your total is ${order.totalPrice}`}
+                                            shippingAddress
+                                            billingAddress
+                                            amount={order.totalPrice * 100}
+                                            stripeKey={KEY}
+                                            token={onToken}
+                                        />
+                                    )}
+                                </ListGroup.Item>
+                            )}
+                            {loadingDeliver && <Loader />}
+                            {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                <ListGroup.Item>
+                                    <Button type='button' className='btn btn-block' onClick={successDeliverHandler} style={{ width: '100%' }}>Mark as delivered</Button>
+                                </ListGroup.Item>
+                            )}
                         </ListGroup>
                     </Card>
                 </Col>
