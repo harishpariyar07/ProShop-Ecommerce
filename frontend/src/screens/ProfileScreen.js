@@ -42,8 +42,12 @@ const ProfileScreen = () => {
                 setName(user.name)
                 setEmail(user.email)
             }
+
+            if (!orders) {
+                dispatch(listMyOrders())
+            }
         }
-    }, [dispatch, navigate, userInfo, user,])
+    }, [dispatch, navigate, userInfo, user, orders])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -126,12 +130,11 @@ const ProfileScreen = () => {
                     <tbody>
                         {orders.map((order) => (
                             <tr key={order._id}>
+                                <td>{order._id}</td>
                                 <td>{order.createdAt.toString().substring(0, 10)}</td>
                                 <td>{order.totalPrice}</td>
                                 <td>{order.isPaid ? order.paidAt.toString().substring(0, 10) : (
-                                    <i className='fas fa-time' style={{
-                                        color: 'red'
-                                    }}></i>
+                                    <i className='fas fa-times' style={{ color: 'red', textAlign: 'center' }}></i>
                                 )}</td>
                                 <td>{order.isDelivered ? order.deliveredAt.toString().substring(0, 10) : (
                                     <i className='fas fa-times' style={{ color: 'red', textAlign: 'center' }}></i>
