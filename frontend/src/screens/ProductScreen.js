@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+import Meta from '../components/Meta'
 
 const ProductScreen = () => {
     const [qty, setQty] = useState(1)
@@ -48,6 +49,7 @@ const ProductScreen = () => {
 
     return (
         <>
+            <Meta title={product.name} />
             <Link className='btn btn-light my-3' to='/'>
                 Go Back
             </Link>

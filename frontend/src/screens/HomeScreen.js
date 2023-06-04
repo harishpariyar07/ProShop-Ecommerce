@@ -6,8 +6,9 @@ import { listProducts } from "../actions/productsActions";
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ProductCarousel from "../components/ProductCarousel";
+import Meta from "../components/Meta";
 
 const HomeScreen = () => {
     const { keyword, pageNumber = 1 } = useParams()
@@ -23,8 +24,12 @@ const HomeScreen = () => {
 
     return (
         <>
+            <Meta title={"Welcome to ProShop | Home"} />
             {!keyword && <ProductCarousel />}
-            <h1 className='my-3'>Latest Products</h1>
+            {keyword && <Link className='btn btn-light my-3' to='/'>
+                Go Back
+            </Link>}
+            {keyword ? <h1 className="my-3">Search Results</h1> : <h1 className='my-3'>Latest Products</h1>}
             {loading ? (
                 <Loader />
             ) : error ? (
